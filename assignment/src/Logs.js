@@ -1,19 +1,25 @@
 import React, { Component } from 'react'
 
 export default class Logs extends Component{
-    constructor(props){
-        super(props);
-        console.log(props)
-        this.state = {
-            player: this.props.player
-        }
-    }
+  constructor(props){
+    super(props);
+    console.log(props)
+  }
 
-    render(){
-        return (
-            <div>
-                <p>Current player: {this.state.player}</p>
-            </div>
-        )
-    }
+  createLogList () {
+    console.log('logQueue is ', this.props.logQueue )
+    return this.props.logQueue.map((log, index) => (<div key={index}>{log}</div>))
+  }
+
+  render () {
+    const logList = this.createLogList()
+    return (
+      <ul>
+        {logList}
+      </ul>
+    )
+  }
 }
+Logs.defaultProps = {  
+  logQueue: []
+} 

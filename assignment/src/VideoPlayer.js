@@ -20,13 +20,11 @@ export default class VideoPlayer extends React.Component {
   }
 
   dragenter(e) {
-    console.log('DrageEnter called')
     e.stopPropagation();
     e.preventDefault();
   }
   
   dragover(e) {
-    console.log('DrageOver called')
     e.stopPropagation();
     e.preventDefault();
   }
@@ -44,17 +42,58 @@ export default class VideoPlayer extends React.Component {
   }
 
   handleFiles(files) {
-    for (var i = 0; i < files.length; i++) {
-      const video = document.createElement("video")
-      const file = files[i]
-      video.file = file;
-      this.videoFrame.appendChild(video);
-      var reader = new FileReader();
-      reader.onload = ((aVideo) => (e) => { 
-        this.player = videojs(aVideo, { "controls": true, "autoplay": true, "preload": "auto" }).src({ type: "video/mp4", src: e.target.result})
-      })(video);
-      reader.readAsDataURL(file);
-    }
+    const video = document.createElement("video")
+    video.setAttribute("style" , "height: 500px; width: 500px;")
+    const file = files[0]
+    video.file = file;
+    this.videoFrame.appendChild(video);
+    var reader = new FileReader();
+    var self = this
+    reader.onload = ((aVideo) => (e) => { 
+      this.player = videojs(aVideo, { 
+        "controls": true, 
+        "autoplay": true,
+        "preload": "auto" , 
+        "sources" : { 
+          type: "video/mp4", 
+          src: e.target.result
+        }
+      }, 
+      function ready() {
+        self.prevTime = 0
+        this.on('timeupdate', function () {
+          self.currentTime = this.currentTime()
+          const reversed = (self.currentTime - self.prevTime) < 0
+          if(!reversed) {
+            const currViewPercentage = self.currentTime/this.duration()
+            const prevViewPercentage = self.prevTime/this.duration()
+            if(((self.currentTime - self.prevTime) * 1000) < 1000 * this.playbackRate()) {
+              if((prevViewPercentage > 0 && prevViewPercentage < .25) && 
+                (currViewPercentage >= .25 && currViewPercentage < .5)) {
+                self.props.handleLog('25%', file.name)
+                // console.log('25%')
+              }
+              else if((prevViewPercentage > .25 && prevViewPercentage < .5) && 
+                (currViewPercentage >= .5 && currViewPercentage < .75)) {
+                self.props.handleLog('50%', file.name)
+                // console.log('50%')
+              }
+              else if((prevViewPercentage > .5 && prevViewPercentage < .75) && 
+                (currViewPercentage >= .75 && currViewPercentage < 1)) {
+                self.props.handleLog('75%', file.name)
+                // console.log('75%')
+              }
+              else if((prevViewPercentage >= .75 && prevViewPercentage < 1) && 
+                currViewPercentage === 1) {
+                self.props.handleLog('100%', file.name)
+              }
+            }
+          }
+          self.prevTime = self.currentTime
+        })
+      }) 
+    })(video);
+    reader.readAsDataURL(file);
   }
 
   componentWillUnmount() {
@@ -66,8 +105,8 @@ export default class VideoPlayer extends React.Component {
   getStyle() {
     return ({
       videoDiv: {
-        height: 200,
-        width: 200,
+        height: 500,
+        width: 500,
         borderColor: 'black',
         borderWidth: 2,
         borderStyle: 'solid'
