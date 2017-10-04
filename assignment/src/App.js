@@ -9,25 +9,20 @@ class App extends Component {
     this.state = {
       logQueue: []
     }
-    // this.logQueue = []
     this.handleLog = this.handleLog.bind(this)
   }
 
   shouldComponentUpdate(nextProps, nextState) {
-    console.log("shouldComponentUpdate called")
     return true
   }
 
   handleLog(percentage, fileName) {
     const newVal = `${new Date()} : Finished viewing ${fileName} ${percentage}`
-    // console.log(newVal)
     this.setState((prevState) => { 
       return {
         logQueue: [...prevState.logQueue, newVal]
       }
     })
-    console.log("this.this.state :", this.state)
-    // this.logQueue.push(newVal)
   }
 
   getStyle () {
@@ -61,7 +56,6 @@ class App extends Component {
 
   render() {
     const { container, logContainer, videoContainer } = this.getStyle()
-    console.log('$$$$$$ ', this.state.logQueue)
     return (
       <div className="App">
         <header className="App-header">
