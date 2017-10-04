@@ -43,7 +43,7 @@ export default class VideoPlayer extends React.Component {
 
   handleFiles(files) {
     const video = document.createElement("video")
-    video.setAttribute("style" , "height: 500px; width: 500px;")
+    video.setAttribute("style" , "height: auto !important; width: 100% !important; ")
     const file = files[0]
     video.file = file;
     this.videoFrame.appendChild(video);
@@ -105,11 +105,12 @@ export default class VideoPlayer extends React.Component {
   getStyle() {
     return ({
       videoDiv: {
-        height: 500,
-        width: 500,
+        height: '100%',
+        width: '100%',
         borderColor: 'black',
         borderWidth: 2,
-        borderStyle: 'solid'
+        borderStyle: 'dotted',
+        textAlignment: 'center'
       }
     })
   }
@@ -120,6 +121,7 @@ export default class VideoPlayer extends React.Component {
     const { videoDiv } = this.getStyle()
     return (
       <div id="videoFrame" data-vjs-player style={videoDiv} ref={(frame) => this.videoFrame = frame}>
+        <p style={{paddingTop:30}}>Drag and Drop your Files Here</p>
       </div>
     )
   }

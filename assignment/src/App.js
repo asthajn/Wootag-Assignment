@@ -33,17 +33,28 @@ class App extends Component {
   getStyle () {
     return {
       container: {
-        display: 'flex',
-        flexDirection: 'row'
+        display: 'block',
+        height: '500px',
+        marginTop: '30px',
+
       },
       logContainer: {
         borderColor: 'black',
         borderWidth: 2,
         borderStyle: 'solid',
-        minWidth: '50%'
+        width: '30%',
+        display: 'inline-block',
+        float: 'right',
+        height: '500px',
+        overflowY: 'auto',
+        marginRight: '40px'
       },
       videoContainer: {
-        minWidth: '50%'
+        width: '40%',
+        display: 'inline-block',
+        float: 'left',
+        marginLeft: '40px',
+        height: '100%'
       }
     }
   }
@@ -55,13 +66,10 @@ class App extends Component {
       <div className="App">
         <header className="App-header">
           <img src={logo} className="App-logo" alt="logo" />
-          <h1 className="App-title">Welcome to React</h1>
         </header>
         <div style={container}>
-          <div style={videoContainer}>
-            <VideoPlayer 
-              handleLog={this.handleLog}
-            />
+          <div style={videoContainer}> 
+            <VideoPlayer handleLog={this.handleLog}/>
           </div>
           <div style={logContainer}>
             <Logs logQueue={this.state.logQueue}/>

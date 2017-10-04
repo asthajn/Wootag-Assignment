@@ -8,15 +8,28 @@ export default class Logs extends Component{
 
   createLogList () {
     console.log('logQueue is ', this.props.logQueue )
-    return this.props.logQueue.map((log, index) => (<div key={index}>{log}</div>))
+    return this.props.logQueue.map((log, index) => (<li key={index}>{log}</li>))
+  }
+
+  getStyle () {
+    return {
+      logContainer: {
+        fontSize:'11px',
+        marginRight:'15px'
+      }
+    }
   }
 
   render () {
     const logList = this.createLogList()
+    const { logContainer } = this.getStyle()
     return (
-      <ul>
-        {logList}
-      </ul>
+      <div>
+        <div>Logs</div>
+        <ul style={logContainer}>
+          {logList}
+        </ul>
+      </div>
     )
   }
 }
