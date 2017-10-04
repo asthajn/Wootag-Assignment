@@ -16,8 +16,15 @@ class App extends Component {
     return true
   }
 
+  GetFormattedDate() {
+    var d = new Date();
+    var datestring = d.getDate()  + "-" + (d.getMonth()+1) + "-" + d.getFullYear() + " " +
+    d.getHours() + ":" + d.getMinutes();
+    return datestring
+  }
+
   handleLog(percentage, fileName) {
-    const newVal = `${new Date()} : Finished viewing ${fileName} ${percentage}`
+    const newVal = `${this.GetFormattedDate()} : Finished viewing ${fileName} ${percentage}`
     this.setState((prevState) => { 
       return {
         logQueue: [...prevState.logQueue, newVal]

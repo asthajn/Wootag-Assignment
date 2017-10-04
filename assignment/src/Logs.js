@@ -1,10 +1,7 @@
 import React, { Component } from 'react'
 
 export default class Logs extends Component{
-  constructor(props){
-    super(props);
-  }
-
+    
   createLogList () {
     return this.props.logQueue.map((log, index) => (<li key={index}>{log}</li>))
   }
@@ -12,7 +9,7 @@ export default class Logs extends Component{
   getStyle () {
     return {
       logContainer: {
-        fontSize:'11px',
+        fontSize:'13px',
         marginRight:'15px'
       }
     }
