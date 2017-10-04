@@ -20,7 +20,7 @@ class App extends Component {
 
   handleLog(percentage, fileName) {
     const newVal = `${new Date()} : Finished viewing ${fileName} ${percentage}`
-    console.log(newVal)
+    // console.log(newVal)
     this.setState((prevState) => { 
       return {
         logQueue: [...prevState.logQueue, newVal]
@@ -44,7 +44,6 @@ class App extends Component {
         borderStyle: 'solid',
         width: '30%',
         display: 'inline-block',
-        float: 'right',
         height: '500px',
         overflowY: 'auto',
         marginRight: '40px'
@@ -52,9 +51,10 @@ class App extends Component {
       videoContainer: {
         width: '40%',
         display: 'inline-block',
-        float: 'left',
-        marginLeft: '40px',
-        height: '100%'
+        marginLeft: '80px',
+        float:'left',
+        height: '100%',
+        paddingRight: '60px'
       }
     }
   }

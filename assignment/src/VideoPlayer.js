@@ -6,6 +6,9 @@ export default class VideoPlayer extends React.Component {
   
   constructor(props) {
     super(props)
+    this.state = {
+      videoFlag: false
+    }
     this.handleFiles = this.handleFiles.bind(this)
     this.dragenter = this.dragenter.bind(this)
     this.dragover = this.dragover.bind(this)
@@ -53,11 +56,7 @@ export default class VideoPlayer extends React.Component {
       this.player = videojs(aVideo, { 
         "controls": true, 
         "autoplay": true,
-        "preload": "auto" , 
-        "sources" : { 
-          type: "video/mp4", 
-          src: e.target.result
-        }
+        "preload": "auto"
       }, 
       function ready() {
         self.prevTime = 0
@@ -91,37 +90,44 @@ export default class VideoPlayer extends React.Component {
           }
           self.prevTime = self.currentTime
         })
-      }) 
+      }).src({ type: "video/mp4", src: e.target.result})
     })(video);
     reader.readAsDataURL(file);
+    this.setState({
+      videoFlag: true
+    })
   }
 
   componentWillUnmount() {
     if(this.player) {
-      this.player.dispose()
+     this.player.dispose()
     }
   }
 
   getStyle() {
     return ({
-      videoDiv: {
+      videoDivActive: {
         height: '100%',
         width: '100%',
         borderColor: 'black',
         borderWidth: 2,
         borderStyle: 'dotted',
         textAlignment: 'center'
+      },
+      videoDivHidden: {
+        border: 'none'
       }
     })
   }
   // wrap the player in a div with a `data-vjs-player` attribute
   // so videojs won't create additional wrapper in the DOM
-  // see https://github.com/videojs/video.js/pull/3856
   render() {
-    const { videoDiv } = this.getStyle()
+    const { videoDivActive, videoDivHidden } = this.getStyle()
+    let videoDiv = {}
+    this.state.videoFlag ? (videoDiv = videoDivHidden) : (videoDiv = videoDivActive)
     return (
-      <div id="videoFrame" data-vjs-player style={videoDiv} ref={(frame) => this.videoFrame = frame}>
-        <p style={{paddingTop:30}}>Drag and Drop your Files Here</p>
+      <div id="videoFrame" style={videoDiv} ref={(frame) => this.videoFrame = frame}>
+        <p style={{paddingTop:30}}>Drag and Drop Video Here</p>
       </div>
     )
   }
